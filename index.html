@@ -1,0 +1,114 @@
+<html>
+<body>
+<!-- <script src="graphics.js"></script>
+<script src="Camera.js"></script>
+
+<script src="Keyboard.js"></script>
+
+<script src="Object.js"></script>
+<script src="Points.js"></script>
+<script src="Render.js"></script>
+<script src="Scene.js"></script> -->
+<script src="3DGraphics.js"></script>
+
+<script src="cube.js"></script>
+
+
+<div id="text">WASD and arrow keys to move</br>Space to shoot</div>
+
+<!-- <a id="scene" src="scene.obj"></a> -->
+<canvas id = "canvas">
+
+</body>
+<style>
+body {
+	margin:0;
+}
+canvas {
+	margin:0;
+}
+#text {
+	position:absolute;
+	top:0;
+	width:100%;
+	text-align:center;
+	color:white;
+
+}
+
+</style>
+<script>
+var c = document.getElementById("canvas");
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+//console.log(document.getElementById("scene".innerHTML))
+
+//alert("WASD and arrow keys to move")
+var m = modelFromObj(cube,true);
+function Asteroid(){
+	this.model = m.copy()
+	this.model.scale(Math.random()*4+1)
+	for(var i = 0; i<6; i++){
+		this.model.points[i].scale(1+Math.random()*5)
+
+	}
+
+
+
+}
+//console.log(str)
+var g = new Graphics(c);
+var k = new Keyboard();
+
+var c = new Camera();
+
+//var m2 = modelFromObj(teapot,true);
+//m2.translate(new point3d(10,0,0))
+//m2.scale(2)
+var	 s = new Scene([] , c, k)
+
+m.scale(1)
+
+
+
+var step = function(){
+	if(g.stepCount == 1){
+		for(var i = 0; i < 200; i++){
+		//var cubeCopy = m.copy();
+		var a = new Asteroid()
+		var speed = 20;
+		a.model.translate(new point3d((Math.random()-.5)*400,(Math.random()-.5)*400,(Math.random()-.5)*400))
+		a.model.velocity = new point3d((Math.random()-.5)*speed,(Math.random()-.5)*speed,(Math.random()-.5)*speed)
+		s.addObject(a.model)
+		}
+		
+	}
+
+	if(c.fireBullet){
+		c.fireBullet = false;
+		c.stepsSinceBullet= 0;
+		var b = modelFromObj(cube,true,new point3d(0,0,0),true)
+		b.translate(c.position);
+		b.velocity = c.forward()
+		console.log(c.vel)
+		b.velocity.scale(100+c.vel.magnitude())
+		s.addObject(b)
+
+	}
+	c.stepsSinceBullet+=2;
+
+	
+}
+g.setStep(step);
+
+//console.log(m)
+g.setScene(s);
+
+g.begin()
+
+
+
+
+
+</script>
+</html
